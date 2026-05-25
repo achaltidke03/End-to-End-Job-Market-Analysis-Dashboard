@@ -1,4 +1,4 @@
-# Job Market Analysis — Data Analyst Roles
+# 🇮🇳 India Job Market Analysis — Data Analyst Roles
 
 > **Which city should a fresher target? What skills actually get you hired? What salary is realistic?**
 > I analyzed **90,000+ real Indian job listings** to answer these questions using SQL, Excel, and Power BI.
@@ -10,7 +10,7 @@
 
 ---
 
-##  Project Overview
+## 📌 Project Overview
 
 As a fresher entering the data job market in India, I found a lot of contradictory advice online. So instead of guessing, I decided to **analyze the actual data**.
 
@@ -26,7 +26,7 @@ This project answers **5 critical questions** for anyone job-hunting in data rol
 
 ---
 
-##  Dataset
+## 📁 Dataset
 
 | Field | Details |
 |---|---|
@@ -38,7 +38,7 @@ This project answers **5 critical questions** for anyone job-hunting in data rol
 
 ---
 
-##  Tools Used
+## 🛠️ Tools Used
 
 | Tool | Purpose |
 |---|---|
@@ -48,9 +48,10 @@ This project answers **5 critical questions** for anyone job-hunting in data rol
 
 ---
 
-##  Data Cleaning — What I Fixed
+## 🧹 Data Cleaning — What I Fixed
 
 ### Problem 1: 40% Null Values in Salary Column
+
 Filled nulls using **location-level average salary** so comparisons stay valid:
 
 ```sql
@@ -70,6 +71,7 @@ WHERE j.salary IS NULL;
 ---
 
 ### Problem 2: Inconsistent City Names
+
 The same city appeared 5–6 different ways across the dataset:
 
 ```sql
@@ -82,11 +84,12 @@ SET location = CASE
 END;
 ```
 
-> Without this step, Bangalore would appear as 4 separate cities — severely undercounting its true market share.
+> Without this step, Bangalore would appear as 4 separate cities — severely undercounting its true 26.88% market share.
 
 ---
 
 ### Problem 3: Wide Skill Format (SKILL_1 to SKILL_8)
+
 The raw data stored skills in 8 separate columns — impossible to count or rank. Unpivoted into a normalized tall format:
 
 ```sql
@@ -109,7 +112,7 @@ WHERE skill IS NOT NULL AND TRIM(skill) <> '';
 
 ---
 
-##  Analysis & Findings
+## 📊 Analysis & Findings
 
 ### Finding 1: Bangalore Dominates — By a Large Margin
 
@@ -134,7 +137,8 @@ LIMIT 10;
 | Mumbai | 259 | 7.27% |
 | Gurgaon/Gurugram | 187 | 5.25% |
 | Chennai | ~170 | ~4.90% |
-[City Hiring Results](city_hiring_result.png)
+
+![City Hiring Results](city_hiring_result.png)
 
 **Key Insight:** Bangalore alone has **3.3x more listings** than the next city. A fresher not applying to Bangalore is ignoring 27% of the entire market.
 
@@ -142,7 +146,7 @@ LIMIT 10;
 
 ---
 
-### Finding 2: SQL & Excel Are the Non-Negotiables
+### Finding 2: SQL is the #1 Technical Skill
 
 ```sql
 SELECT
@@ -167,11 +171,12 @@ LIMIT 15;
 | analytics | 318 | 2.19% |
 | **SQL** | **288** | **1.99%** |
 | Data Analysis | 285 | 1.97% |
-[Skill Demand Results](Skill_demand.png)  
+
+![Skill Demand Results](skill_demand_result.png)
 
 **Key Insight:** SQL appears in ~2% of all skill slots. Given 8 skills per listing, SQL appears in roughly **25–28% of all job postings** — making it the #1 technical skill to have.
 
-> **Data quality note:** Generic terms like "management" and "data" ranked high because skill columns contained job-description fragments. A production pipeline would whitelist valid tool names before analysis.
+> **Data quality note:** Generic terms like "management" ranked high because skill columns contained job-description fragments. A production pipeline would whitelist valid tool names before analysis.
 
 ---
 
@@ -189,7 +194,7 @@ HAVING COUNT(*) >= 10
 ORDER BY avg_salary_lpa DESC;
 ```
 
-**Key Insight:** Realistic entry-level salaries after normalization:
+**Realistic entry-level salary ranges after normalization:**
 
 | City | Fresher Salary Range |
 |---|---|
@@ -198,73 +203,68 @@ ORDER BY avg_salary_lpa DESC;
 | Mumbai | ₹7 – 10 LPA |
 | Pune | ₹6 – 9 LPA |
 | Delhi/NCR | ₹5 – 9 LPA |
-[Salary by City Results](salary_by_city_result.png)
-> `HAVING COUNT(*) >= 10` filters out cities with only 1–2 listings — small samples produce misleading averages and must be excluded from salary analysis.
+
+![Salary by City Results](salary_by_city_result.png)
+
+> `HAVING COUNT(*) >= 10` filters out cities with only 1–2 listings — small samples produce misleading averages and must be excluded.
 
 ---
 
-##  Key Business Insights
+## 💡 Key Business Insights
 
 | # | Insight | Implication |
 |---|---|---|
 | 1 | Bangalore = 26.88% of all analyst listings | Apply here first — 1 in 4 jobs is here |
 | 2 | Bangalore + Hyderabad = 35% of market | Two cities cover a third of all openings |
-| 3 | SQL in ~25–28% of postings | Single most important technical skill for a fresher |
-| 4 | "Data Analyst" is 3–4x more common than "Data Scientist" | Target DA roles first |
+| 3 | SQL in ~25–28% of postings | Single most important technical skill for freshers |
+| 4 | Data Analyst is 3–4x more common than Data Scientist | Target DA roles — far better odds as a fresher |
 | 5 | Soft skills dominate raw skill counts | Companies value communication as much as tools |
 
 ---
 
-##  Advanced SQL Techniques Used
+## 🔑 Key Design Decisions
+
+**Why UNION ALL and not UNION to unpivot skills?**
+UNION removes duplicates — two different jobs can legitimately list the same skill, so UNION ALL was the correct choice to preserve every row accurately.
+
+**Why city-level salary imputation instead of global average?**
+Bangalore salaries are nearly double Tier-2 city salaries. Using a global mean would distort every city-level comparison and make the salary analysis meaningless.
+
+**Why HAVING COUNT(*) >= 10 in salary query?**
+Cities with 1–2 listings produce statistically unreliable averages. Filtering them out gives a cleaner, more honest picture of where salaries actually stand.
+
+---
+
+## 🔍 Advanced SQL Techniques Used
 
 | Technique | Where Used | Why It Matters |
 |---|---|---|
 | `SUM() OVER()` window function | City % share | Calculates grand total without a subquery |
 | `UNION ALL` unpivoting | Skill normalization | Converts wide format to analyzable tall format |
 | `UPDATE` with JOIN subquery | Salary null imputation | City-level fill — more accurate than global mean |
-| `CASE + LOWER()` | City standardization | Case-insensitive matching catches all variants |
-| Correlated subquery | Skill % calculation | Divides by total skill rows, not group count |
+| `CASE + LOWER()` | City standardization | Case-insensitive matching catches all spelling variants |
+| Correlated subquery | Skill % calculation | Divides by total skill rows, not just group count |
 | `HAVING COUNT(*) >= 10` | Salary by city | Removes statistically insignificant samples |
 
 ---
 
-##  Power BI Dashboard
-
-**Page 1 — Market Overview**
-- City map by listing volume
-- Skill frequency bar chart (top 15)
-- Role type donut chart
-
-**Page 2 — Salary Explorer**
-- Salary by city
-- Salary by role type
-- Salary bracket distribution
-
-**Page 3 — Company Intelligence**
-- Top hiring companies
-- Multi-city hiring presence
-- Skill demand by company
-
----
-
-##  Project Structure
+## 📂 Project Structure
 
 ```
 End-to-End-Job-Market-Analysis-Dashboard/
 │
-├── JobMarket_Analysis.sql              ← All SQL (cleaning + analysis)
-├── Job Market Analytics Dashboard.pbix ← Power BI dashboard
-├── JobMarket_Analysis_ModelData.xlsx   ← Cleaned data model
-├── screenshots/
-│   ├── city_hiring_result.png          ← Bangalore 26.88%
-│   ├── skill_demand_result.png         ← SQL 1.99%
-│   └── salary_by_city_result.png       ← Salary breakdown
+├── JobMarket_Analysis.sql               ← All SQL (cleaning + analysis)
+├── Job Market Analytics Dashboard.pbix  ← Power BI dashboard
+├── JobMarket_Analysis_ModelData.xlsx    ← Cleaned data model
+├── city_hiring_result.png               ← Screenshot: Bangalore 26.88%
+├── skill_demand_result.png              ← Screenshot: SQL 1.99%
+├── salary_by_city_result.png            ← Screenshot: Salary breakdown
 └── README.md
 ```
 
 ---
 
-##  How to Run
+## ▶️ How to Run
 
 ```bash
 # 1. Clone the repo
@@ -274,27 +274,18 @@ git clone https://github.com/achaltidke03/End-to-End-Job-Market-Analysis-Dashboa
 #    Database: analysts | Table: jobs
 
 # 3. Run JobMarket_Analysis.sql section by section
-#    Sections 1–2 = cleaning | Sections 3–8 = analysis
+#    Sections 1-2 = cleaning | Sections 3-8 = analysis
 
 # 4. Open Job Market Analytics Dashboard.pbix in Power BI Desktop
 #    Update data source to your MySQL connection
 ```
-##  Key Design Decisions
 
-**Why UNION ALL to unpivot skills?**
-UNION removes duplicates — two jobs can legitimately share a skill,
-so UNION ALL was the correct choice to preserve all rows.
+---
 
-**Why city-level salary imputation?**
-A global average would distort city comparisons. Bangalore salaries
-are nearly double Tier-2 cities — imputing them together would be
-statistically wrong.
-
-
-##  Contact
+## 📬 Contact
 
 **Achal Tidke** — Data Analyst | Nagpur, India
- achaltidke03@gmail.com
+📧 achaltidke03@gmail.com
 🔗 [LinkedIn](https://linkedin.com/in/achal-tidke-618113332) | 💻 [GitHub](https://github.com/achaltidke03)
 
 ---
