@@ -209,6 +209,25 @@ ORDER BY avg_salary_lpa DESC;
 > `HAVING COUNT(*) >= 10` filters out cities with only 1–2 listings — small samples produce misleading averages and must be excluded.
 
 ---
+## 📊 Power BI Dashboard
+
+**Page 1 — Market Overview**
+- KPIs(location slicer)
+- Top Departments bar chart
+- Job post recency
+
+**Page 2 — SKills**
+- Top skills count
+- Most in demand skills
+- Skill percentage by role
+
+**Page 3 — Company Intelligence**
+- companies Insights
+- Average salary
+- Experience by company
+
+ ---
+  
 
 ## 💡 Key Business Insights
 
