@@ -172,7 +172,7 @@ LIMIT 15;
 | **SQL** | **288** | **1.99%** |
 | Data Analysis | 285 | 1.97% |
 
-![Skill Demand Results](skill_demand_result.png)
+![Skill Demand Results](Skill_demand.png)
 
 **Key Insight:** SQL appears in ~2% of all skill slots. Given 8 skills per listing, SQL appears in roughly **25–28% of all job postings** — making it the #1 technical skill to have.
 
