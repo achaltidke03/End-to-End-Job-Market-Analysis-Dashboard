@@ -134,6 +134,7 @@ LIMIT 10;
 | Mumbai | 259 | 7.27% |
 | Gurgaon/Gurugram | 187 | 5.25% |
 | Chennai | ~170 | ~4.90% |
+[City Hiring Results](city_hiring_result.png)
 
 **Key Insight:** Bangalore alone has **3.3x more listings** than the next city. A fresher not applying to Bangalore is ignoring 27% of the entire market.
 
@@ -166,6 +167,7 @@ LIMIT 15;
 | analytics | 318 | 2.19% |
 | **SQL** | **288** | **1.99%** |
 | Data Analysis | 285 | 1.97% |
+[Skill Demand Results](Skill_demand.png)  
 
 **Key Insight:** SQL appears in ~2% of all skill slots. Given 8 skills per listing, SQL appears in roughly **25–28% of all job postings** — making it the #1 technical skill to have.
 
@@ -196,7 +198,7 @@ ORDER BY avg_salary_lpa DESC;
 | Mumbai | ₹7 – 10 LPA |
 | Pune | ₹6 – 9 LPA |
 | Delhi/NCR | ₹5 – 9 LPA |
-
+[Salary by City Results](salary_by_city_result.png)
 > `HAVING COUNT(*) >= 10` filters out cities with only 1–2 listings — small samples produce misleading averages and must be excluded from salary analysis.
 
 ---
